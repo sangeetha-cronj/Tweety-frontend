@@ -67,7 +67,7 @@ class Table extends Component {
             <Select name="id" id="cars" placeholder="select user" className="margin-bottom" onChange={this.selectHandler} style={{ width: 100 }}>
               {this.props.tweets.map(data => (<Select.Option value={data._id}>{data.userName}</Select.Option>))}
             </Select>
-            <div className="margin-bottom">
+            <div className="margin-bottom margin-top">
               {addBtn}
             </div>
             {tweetBox}
