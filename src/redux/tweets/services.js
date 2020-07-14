@@ -1,8 +1,7 @@
 import axios from 'axios'
+import { notification } from 'antd'
 import {
   ADD_TWEET,
-  REMOVE_TWEET,
-  UPDATE_TWEET,
   FETCH_TWEET,
   FETCH_TWEETS
 } from './actions';
@@ -15,6 +14,11 @@ export const addTweet = (data) => dispatch => {
     .then(res => {
       console.log("api response -->", res)
       if (res.status === 201) {
+        notification.success({
+          message: 'Success',
+          description:
+            'Tweet Added',
+        });
         dispatch({
           type: ADD_TWEET,
           payload: {
@@ -59,7 +63,7 @@ export const fetchTweet = (id) => dispatch => {
       console.log("api response", res)
       if (res && res.data) {
         dispatch({
-          type: FETCH_TWEETS,
+          type: FETCH_TWEET,
           payload: {
             currentItem: res.data,
             isCreated: false,
@@ -70,3 +74,32 @@ export const fetchTweet = (id) => dispatch => {
       }
     })
 }
+
+
+export const addExtraTweet = (id, data) => dispatch => {
+  axios
+    .patch(`${ServerAddress}/tweets/${id}`, data)
+    .then(res => {
+      console.log("api response -->", res)
+      if (res.status === 200) {
+        notification.success({
+          message: 'Success',
+          description:
+            'Tweet Added',
+        });
+        dispatch({
+          type: ADD_TWEET,
+          payload: {
+            items: [],
+            currentItem: res.data,
+            isCreated: true,
+            isUpdated: false,
+            isDeleted: false,
+          }
+        })
+      }
+
+    }).catch(err => {
+      console.log("error [api]", err)
+    });
+};
