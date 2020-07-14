@@ -9,35 +9,43 @@ class Tweety extends Component {
   render() {
     return (
       <Fragment>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a className="navbar-brand" href="#">Tweety App</a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
+        <nav className="navbar navbar-custom">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#">Tweety App</a>
+              <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-expanded="false">
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+              </button>
+            </div>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
-                <Link to="/" className="nav-link">
-                  Home
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="nav navbar-nav mr-auto">
+                <li className="nav nav-item active">
+                  <Link to="/" className="nav-link">
+                    Home
 							</Link>
 
-              </li>
-              <li className="nav-item">
-                <Link to="/viewtweets" className="nav-link">
-                  View
+                </li>
+                <li className="nav nav-item">
+                  <Link to="/tweetform" className="nav-link">
+                    Add Tweet
 							</Link>
-              </li>
+                </li>
 
-            </ul>
+              </ul>
+            </div>
+
           </div>
         </nav>
+
         <div>
           <Switch>
             <Route path="/" exact>
               <Table />
             </Route>
-            <Route path="/viewtweets">
+            <Route path="/tweetform">
               <FormCom />
             </Route>
           </Switch>

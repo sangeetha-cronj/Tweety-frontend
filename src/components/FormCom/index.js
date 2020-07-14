@@ -5,7 +5,8 @@ import { addTweet } from '../../redux/tweets/services'
 
 const mapStateToProps = (state) => {
   return {
-    tweets: state,
+    currentTweet: state.currentItem,
+    isCreated: state.isCreated
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -32,7 +33,7 @@ class FormCom extends Component {
     const { getFieldDecorator } = this.props.form
 
     return (
-      <div>
+      <div className="container">
         <h2>Add Tweets</h2>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item label="User Name" name="userName">

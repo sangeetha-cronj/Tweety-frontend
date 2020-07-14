@@ -51,3 +51,22 @@ export const fetchAllTweets = () => dispatch => {
       }
     })
 }
+
+export const fetchTweet = (id) => dispatch => {
+  axios
+    .get(`${ServerAddress}/tweets/${id}`)
+    .then(res => {
+      console.log("api response", res)
+      if (res && res.data) {
+        dispatch({
+          type: FETCH_TWEETS,
+          payload: {
+            currentItem: res.data,
+            isCreated: false,
+            isUpdated: false,
+            isDeleted: false,
+          }
+        })
+      }
+    })
+}

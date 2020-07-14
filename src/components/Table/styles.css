@@ -1,0 +1,16 @@
+.tweet-box {
+  width: 60%;
+  height: 100px;
+  margin: auto;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.tweet-box p {
+  line-height: 100px;
+}
+
+.viewContainer {
+  width: 80%;
+  margin: auto;
+}

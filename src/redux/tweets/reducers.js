@@ -15,7 +15,7 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-  console.log("reducerrr-->", action)
+  // console.log("reducerrr-->", action)
   switch (action.type) {
     case ADD_TWEET:
       return {
@@ -38,10 +38,12 @@ export default function (state = initialState, action) {
         ...action.payload
       };
     case FETCH_TWEETS:
-      return {
+      state = {
         ...state,
         ...action.payload
-      };
+      }
+      return state;
+
     default:
       return state;
   }
