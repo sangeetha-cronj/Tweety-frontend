@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Card, Select, Button } from 'antd'
 import _ from 'lodash'
 import FormCom from '../FormCom/index'
@@ -11,10 +11,21 @@ class Table extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { isAddtweet: false, tweets: [] }
+    this.state = { isAddtweet: false, tweets: [], isView: false }
   }
   componentDidMount() {
     this.props.fetchTweetsFunc()
+    // console.log(this.props.match.userId)
+    // if (this.props.match.path === '/view/:userId') {
+    // }
+  }
+
+  componentDidUpdate(nextState, prevProps) {
+    console.log("componentWillReceiveProps", nextState, prevProps)
+    if (prevProps.isView && this.props.match.params.userId) {
+      this.props.fetchTweetFunc(this.props.match.params.userId)
+    }
+
   }
 
   selectHandler = (e) => {
@@ -30,31 +41,63 @@ class Table extends Component {
     console.log("in table components-->", this.props)
     let tweetBox = ""
     let addBtn = ""
-
+    let filteredarr = []
     const isEmpty = _.isEmpty(this.props.currentTweet)
+
+    if (this.props.match.params.userId && this.props.match.params.tweetId && this.state.isView === false) {
+      console.log("checkkk==>", this.props.match.path)
+      this.setState({ isView: true })
+    }
+
+
 
     if (!isEmpty) {
       // addBtn = <Link to={`/tweetform/${this.props.currentTweet._id}`}><i className="fa fa-plus fa-2x" aria-hidden="true"></i>Add Tweet</Link>
-      addBtn = <Button onClick={this.onClickAddTweet}>Add Tweet</Button>
+      if (this.state.isView) {
+        console.log("filterr->", this.props.currentTweet.tweets)
+        filteredarr = this.props.currentTweet.tweets.filter(data => (data._id === this.props.match.params.tweetId))
 
-      tweetBox = this.props.currentTweet.tweets.map(data => (
-        <div className="margin-bottom">
-          <Card title={this.props.currentTweet.userName} extra="" style={{ width: 300 }}>
-            <p className="text-center">{data.text}</p>
-          </Card>
-        </div>
-      ))
+        tweetBox = filteredarr.map(data => (
+          <div className="margin-bottom">
+            <Card title={this.props.currentTweet.userName} extra="" style={{ width: 300 }}>
+              <p className="text-center">{data.text}</p>
+            </Card>
+          </div>
+        ))
+      } else {
+
+        addBtn = <Button onClick={this.onClickAddTweet}>Add Tweet</Button>
+
+        tweetBox = this.props.currentTweet.tweets.map(data => {
+          var newTo = {
+            pathname: `/view/${this.props.currentTweet._id}/${data._id}`
+          }
+          return (<div className="margin-bottom">
+            <Card title={this.props.currentTweet.userName} extra={<Link to={newTo}>view</Link>} style={{ width: 300 }}>
+              <p className="text-center">{data.text}</p>
+            </Card>
+          </div>
+          )
+        }
+        )
+      }
     } else {
       addBtn = <Link to="/tweetform"><Button onClick={this.onClickAddTweet}>Add Tweet</Button></Link>
       tweetBox = this.props.tweets.map(data => {
         var username = data.userName
-        return (data.tweets.map(element => (
-          <div className="margin-bottom">
-            <Card title={username} extra="" style={{ width: 300 }}>
+        var userId = data._id
+        return (data.tweets.map(element => {
+          var newTo = {
+            pathname: `/view/${userId}/${element._id}`
+          }
+          return (<div className="margin-bottom">
+            <Card title={username} extra={<Link to={newTo}>view</Link>} style={{ width: 300 }}>
               <p className="text-center">{element.text}</p>
             </Card>
           </div>
-        )))
+          )
+        }
+        ))
       })
     }
 
@@ -92,4 +135,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Table)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Table))

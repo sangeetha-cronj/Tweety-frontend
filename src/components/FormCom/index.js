@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, DatePicker, Button } from 'antd'
 import { connect } from 'react-redux';
+import Authorize from '../Auth'
 import { addTweet, addExtraTweet } from '../../redux/tweets/services'
 
 const mapStateToProps = (state) => {
@@ -63,37 +64,39 @@ class FormCom extends Component {
     // const { isAddOneMore } = this.state
     // const { username } = this.props
     return (
-      <div className="container">
-        <h2>Add Tweets</h2>
-        <Form onSubmit={this.state.isAddOneMore ? this.addOneMoreFunc : this.handleSubmit}>
-          <Form.Item label="User Name" name="userName">
-            {getFieldDecorator('userName', {
-              initialValue: this.state.isAddOneMore ? this.props.username : null,
-              rules: [{
-                required: true,
-                message: 'please input your Name'
-              }]
-            })(<Input style={{ width: 500 }} />)}
-          </Form.Item>
-          <Form.Item label="Tweet" name="text">
-            {getFieldDecorator('text', {
-              rules: [{
-                required: true,
-                message: 'please input Tweet!'
-              }]
-            })(<Input style={{ width: 500 }} />)}
-          </Form.Item>
-          <Form.Item label="Date" name="createdAt">
-            {getFieldDecorator('createdAt', {
-            })(<DatePicker />)}
-          </Form.Item>
-          <Form.Item>
+      <Authorize roles={['admin']} redirect to="/">
+        <div className="container">
+          <h2>Add Tweets</h2>
+          <Form onSubmit={this.state.isAddOneMore ? this.addOneMoreFunc : this.handleSubmit}>
+            <Form.Item label="User Name" name="userName">
+              {getFieldDecorator('userName', {
+                initialValue: this.state.isAddOneMore ? this.props.username : null,
+                rules: [{
+                  required: true,
+                  message: 'please input your Name'
+                }]
+              })(<Input style={{ width: 500 }} />)}
+            </Form.Item>
+            <Form.Item label="Tweet" name="text">
+              {getFieldDecorator('text', {
+                rules: [{
+                  required: true,
+                  message: 'please input Tweet!'
+                }]
+              })(<Input style={{ width: 500 }} />)}
+            </Form.Item>
+            <Form.Item label="Date" name="createdAt">
+              {getFieldDecorator('createdAt', {
+              })(<DatePicker />)}
+            </Form.Item>
+            <Form.Item>
 
-            <Button type="primary" htmlType="submit">Submit</Button>
+              <Button type="primary" htmlType="submit">Submit</Button>
 
-          </Form.Item>
-        </Form>
-      </div>
+            </Form.Item>
+          </Form>
+        </div>
+      </Authorize>
     )
   }
 }

@@ -1,7 +1,5 @@
-// import React from 'react'
 import axios from 'axios'
 import { notification } from 'antd'
-// import { Redirect } from 'react-router-dom'
 import {
   ADD_TWEET,
   FETCH_TWEET,
